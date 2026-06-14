@@ -1,0 +1,112 @@
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Fungsi pembantu
+    function isSignedIn() { return request.auth != null; }
+
+    function isSuperAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'owner.kargloss@gmail.com' || 
+        request.auth.token.email == 'admin.kargloss@gmail.com'
+      );
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Master Services - Semua orang boleh lihat daftar layanan
+    match /services/{id} {
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    // Promos - Semua orang boleh lihat promo aktif
+    match /promos/{id} {
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    // Site Settings - Logo, Peta, dll boleh dibaca publik
+    match /siteSettings/{id} {
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    // Users & Members
+    match /users/{uid} {
+      allow read: if isSuperAdmin() || isOwner(uid);
+      allow write: if isSuperAdmin();
+    }
+
+    match /members/{uid} {
+      allow read: if isSuperAdmin() || isOwner(uid);
+      allow write: if isSuperAdmin() || isOwner(uid);
+      
+      match /notifications/{nid} {
+        allow read: if isSuperAdmin() || isOwner(uid);
+        allow write: if isSuperAdmin() || isOwner(uid);
+      }
+    }
+
+    // Queue Entries - Diperlukan untuk monitor display dan status antrian pribadi
+    match /queueEntries/{id} {
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    // Inventaris & Stok - Khusus Admin & Owner
+    match /parts/{id} {
+      allow read: if isSuperAdmin();
+      allow write: if isSuperAdmin();
+    }
+
+    match /partTransactions/{id} {
+      allow read: if isSuperAdmin();
+      allow write: if isSuperAdmin();
+    }
+
+    match /partPurchases/{id} {
+      allow read: if isSuperAdmin();
+      allow write: if isSuperAdmin();
+    }
+
+    // Jadwal Servis - Member boleh baca jadwal miliknya sendiri
+    match /serviceSchedules/{id} {
+      allow read: if isSuperAdmin() || (isSignedIn() && (resource == null || resource.data.memberId == request.auth.uid));
+      allow write: if isSuperAdmin();
+    }
+
+    // Email (Trigger Email Extension)
+    match /mail/{id} {
+      allow read, write: if isSuperAdmin();
+    }
+
+    // Operasional & Nota
+    match /invoices/{id} {
+      allow read: if isSuperAdmin();
+      allow write: if isSuperAdmin();
+    }
+
+    // Riwayat Servis - Member boleh baca riwayat miliknya sendiri
+    match /serviceOrders/{id} {
+      allow read: if isSuperAdmin() || (isSignedIn() && (resource == null || resource.data.memberId == request.auth.uid));
+      allow write: if isSuperAdmin();
+    }
+
+    match /contactMessages/{id} {
+      allow create: if true;
+      allow read, write: if isSuperAdmin();
+    }
+
+    match /businessInfo/{id} {
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    match /broadcastLogs/{id} {
+      allow read, write: if isSuperAdmin();
+    }
+  }
+}

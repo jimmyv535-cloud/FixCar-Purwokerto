@@ -1,0 +1,58 @@
+{
+  "placeholderImages": [
+    {
+      "id": "hero",
+      "description": "Premium car detailing workshop showcase",
+      "imageUrl": "https://picsum.photos/seed/kargloss-hero/1200/600",
+      "imageHint": "luxury car detailing"
+    },
+    {
+      "id": "detailing",
+      "description": "Professional auto detailing process",
+      "imageUrl": "https://i.imgur.com/wwlvf5C.jpeg",
+      "imageHint": "auto detailing"
+    },
+    {
+      "id": "salon",
+      "description": "Car salon interior cleaning",
+      "imageUrl": "https://i.imgur.com/HqVrtc0.jpeg",
+      "imageHint": "car interior cleaning"
+    },
+    {
+      "id": "washing",
+      "description": "Modern car wash equipment",
+      "imageUrl": "https://i.imgur.com/3liBb75.jpeg",
+      "imageHint": "car wash"
+    },
+    {
+      "id": "protection",
+      "description": "Ceramic coating application",
+      "imageUrl": "https://i.imgur.com/tPKEDC1.jpeg",
+      "imageHint": "ceramic coating"
+    },
+    {
+      "id": "ig-1",
+      "description": "Instagram feed preview 1 - Detailing",
+      "imageUrl": "https://i.imgur.com/wwlvf5C.jpeg",
+      "imageHint": "car polishing"
+    },
+    {
+      "id": "ig-2",
+      "description": "Instagram feed preview 2 - Salon",
+      "imageUrl": "https://i.imgur.com/HqVrtc0.jpeg",
+      "imageHint": "car interior detailing"
+    },
+    {
+      "id": "ig-3",
+      "description": "Instagram feed preview 3 - Washing",
+      "imageUrl": "https://i.imgur.com/3liBb75.jpeg",
+      "imageHint": "clean luxury car"
+    },
+    {
+      "id": "ig-4",
+      "description": "Instagram feed preview 4 - Coating",
+      "imageUrl": "https://i.imgur.com/tPKEDC1.jpeg",
+      "imageHint": "ceramic coating result"
+    }
+  ]
+}

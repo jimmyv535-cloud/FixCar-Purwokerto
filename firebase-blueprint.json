@@ -1,0 +1,154 @@
+
+{
+  "entities": {
+    "Service": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Service",
+      "type": "object",
+      "description": "Represents a car care service offered by Kargloss Autocare, such as Auto Detailing or Car Wash.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Service entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the service, e.g., 'Auto Detailing', 'Cuci Mobil'."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of what the service entails."
+        },
+        "iconUrl": {
+          "type": "string",
+          "description": "URL to an icon or image representing this service.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description"
+      ]
+    },
+    "BusinessInfo": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "BusinessInfo",
+      "type": "object",
+      "description": "Stores static information about Kargloss Autocare, including address, contact details, and operating hours.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the BusinessInfo entity. (Likely a singleton, e.g., 'main')"
+        },
+        "address": {
+          "type": "string",
+          "description": "The full physical address of the business location."
+        },
+        "latitude": {
+          "type": "number",
+          "description": "The geographical latitude of the business location for map integration."
+        },
+        "longitude": {
+          "type": "number",
+          "description": "The geographical longitude of the business location for map integration."
+        },
+        "operationHours": {
+          "type": "string",
+          "description": "A descriptive string detailing the business's operating hours (e.g., 'Senin-Sabtu: 09:00 - 18:00')."
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "The primary contact phone number for the business."
+        },
+        "whatsappLink": {
+          "type": "string",
+          "description": "The direct WhatsApp chat link for customer inquiries and reservations.",
+          "format": "uri"
+        },
+        "instagramProfileLink": {
+          "type": "string",
+          "description": "The URL to the official Instagram profile of the business.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "address",
+        "latitude",
+        "longitude",
+        "operationHours",
+        "phoneNumber",
+        "whatsappLink",
+        "instagramProfileLink"
+      ]
+    },
+    "Member": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Member",
+      "type": "object",
+      "description": "Represents a registered customer or member of Kargloss Autocare.",
+      "properties": {
+        "id": { "type": "string" },
+        "fullName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "carModel": { "type": "string" },
+        "plateNumber": { "type": "string" },
+        "joinedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "fullName", "email", "phone"]
+    },
+    "ServiceSchedule": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ServiceSchedule",
+      "type": "object",
+      "description": "Stores upcoming service appointments for members.",
+      "properties": {
+        "id": { "type": "string" },
+        "memberId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "serviceType": { "type": "string" },
+        "appointmentDate": { "type": "string", "format": "date-time" },
+        "notes": { "type": "string" },
+        "status": { "type": "string", "enum": ["scheduled", "completed", "cancelled"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["memberId", "appointmentDate", "serviceType"]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/services/{serviceId}",
+        "definition": {
+          "entityName": "Service",
+          "schema": { "$ref": "#/backend/entities/Service" },
+          "description": "Collection of static car care services offered."
+        }
+      },
+      {
+        "path": "/members/{memberId}",
+        "definition": {
+          "entityName": "Member",
+          "schema": { "$ref": "#/backend/entities/Member" },
+          "description": "Registered customer profiles."
+        }
+      },
+      {
+        "path": "/serviceSchedules/{scheduleId}",
+        "definition": {
+          "entityName": "ServiceSchedule",
+          "schema": { "$ref": "#/backend/entities/ServiceSchedule" },
+          "description": "Upcoming service reminders and schedules."
+        }
+      }
+    ]
+  }
+}
